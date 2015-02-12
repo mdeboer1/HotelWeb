@@ -12,7 +12,7 @@ package hotel.web;
  */
 public class Hotel {
     private int hotelId;
-    private String name, address, city, state, zip;
+    private String hotelName, address, city, state, zip;
     
     public Hotel(){
         
@@ -36,11 +36,11 @@ public class Hotel {
     }
     
     public final String getHotelName(){
-        return name;
+        return hotelName;
     }
     
-    private void setName(String hotelName){
-        this.name = hotelName;
+    public final void setName(String hotelName){
+        this.hotelName = hotelName;
     }
 
     public final String getAddress() {
@@ -99,7 +99,7 @@ public class Hotel {
 
     @Override
     public String toString() {
-        return "Hotel{" + "hotelId=" + hotelId + ", name=" + name + ", address="
+        return "Hotel{" + "hotelId=" + hotelId + ", name=" + hotelName + ", address="
                 + address + ", city=" + city + ", state=" + state + ", zip=" 
                 + zip + '}';
     }

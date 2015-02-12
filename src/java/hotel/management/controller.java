@@ -5,8 +5,14 @@
  */
 package hotel.management;
 
+import hotel.web.Hotel;
+import hotel.web.HotelDbService;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,11 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author markr_000
+ * @author mdeboer1
  */
 @WebServlet(name = "controller", urlPatterns = {"/control"})
 public class controller extends HttpServlet {
-
+    private static final String RESULT_PAGE = "/hotelmanagement.jsp"; 
+    private String hotelTableName = "hotels";
+    private HotelDbService service;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,9 +40,58 @@ public class controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        List <Hotel> hotelList = null;
+        try {
+            service = new HotelDbService();
+            
+            hotelList = service.retrieveHotels(hotelTableName);
+            
+        } catch (SQLException | ClassNotFoundException | NullPointerException ex) {
+            Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        request.setAttribute("hotelNameList", hotelList);
+        
+        String edit = request.getParameter("editHotel");
+        String delete = request.getParameter("deleteHotel");
+        
+        if (edit != null){
+            
+            try {
+                // change parameters
+                service.updateOneHotelRecordColumnById(hotelTableName, "columnToUpdate", "newValue", 1);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if (delete != null){
+            try {
+                //change hotelId by retrieving it from form
+                service.deleteHotelById(1);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        RequestDispatcher view =
+            request.getRequestDispatcher(RESULT_PAGE);
+        view.forward(request, response);
         
     }
 
+    public final String getHotelTableName() {
+        return hotelTableName;
+    }
+
+    public final void setHotelTableName(String hotelTableName) throws
+            NullPointerException {
+        
+        if (!hotelTableName.isEmpty()){
+            try{
+                this.hotelTableName = hotelTableName;
+            } catch (NullPointerException e){    
+            }
+            
+        }
+    }    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
