@@ -33,4 +33,7 @@ public interface HotelDAOStrategy {
     public abstract void updateOneHotelRecordColumnById(String tableName,  
             String columnToUpdate, String newValue, int hotelId)throws 
             IOException, SQLException, ClassNotFoundException;
+    
+    public abstract int getHotelRecordCount()throws IOException, SQLException,
+            ClassNotFoundException;
 }

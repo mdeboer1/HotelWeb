@@ -9,6 +9,7 @@ import hotel.web.Hotel;
 import hotel.web.HotelDbService;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ public class controller extends HttpServlet {
     private static final String RESULT_PAGE = "/hotelmanagement.jsp"; 
     private String hotelTableName = "hotels";
     private HotelDbService service;
+    private int hotelCount;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,6 +42,14 @@ public class controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        if (hotelCount == 0){
+            try {
+                hotelCount = service.retrieveHotelRecordCount() + 1;
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         List <Hotel> hotelList = null;
         try {
             service = new HotelDbService();
@@ -53,7 +63,12 @@ public class controller extends HttpServlet {
         
         String edit = request.getParameter("editHotel");
         String delete = request.getParameter("deleteHotel");
-        
+        String addToList = request.getParameter("addToList");
+        String submitList = request.getParameter("submitToDb");
+        List<Hotel> hotelAdd = null;
+        String columnToUpdate = request.getParameter("editName");
+        String newValue;
+        String hotelId = request.getParameter("hoteId");
         if (edit != null){
             
             try {
@@ -65,10 +80,32 @@ public class controller extends HttpServlet {
         }
         else if (delete != null){
             try {
+                int id = Integer.parseInt(hotelId);
                 //change hotelId by retrieving it from form
-                service.deleteHotelById(1);
-            } catch (SQLException | ClassNotFoundException ex) {
-                Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+                service.deleteHotelById(id);
+            } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                
+            }
+        }
+        
+        
+        else if (addToList != null){
+            hotelAdd = new ArrayList<>();
+            Hotel h = new Hotel(hotelCount, request.getParameter("addName"),
+                request.getParameter("addAddress"), request.getParameter("addCity"),
+                request.getParameter("addState"), request.getParameter("addZip"));
+            hotelAdd.add(h);
+            hotelCount++;
+            // list will be used in the submit method for this form.
+        }
+        else if (submitList != null){
+            if (hotelAdd.size() == 1){
+//                try {
+//                    Hotel h = hotelAdd[0];
+//                    service.addHotel();
+//                } catch (SQLException | ClassNotFoundException ex) {
+//                    Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
         }
         RequestDispatcher view =

@@ -8,6 +8,8 @@ package hotel.web;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -87,5 +89,32 @@ public class HotelDbService {
         } catch (IOException | SQLException | ClassNotFoundException e)  {
             
         }  
+    }
+    
+    public final int retrieveHotelRecordCount()throws 
+            IOException, SQLException, ClassNotFoundException{
+        int recordCount = 0;
+        
+        try {
+            recordCount = dao.getHotelRecordCount();
+        } catch (IOException | SQLException | ClassNotFoundException ex) {
+            
+        }
+        
+        return recordCount;
+    }
+    
+    public static void main(String[] args) {
+        HotelDbService service = new HotelDbService();
+        List<Hotel> list = null;
+        try {
+            list = service.retrieveHotels("hotels");
+        } catch (SQLException | IOException | ClassNotFoundException | NullPointerException ex) {
+            Logger.getLogger(HotelDbService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        System.out.println(list.size());
+        for (Hotel h : list){
+            System.out.println(h.toString());
+        }
     }
 }

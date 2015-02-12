@@ -30,12 +30,15 @@
                     <form id="hotels" name="hotels" method="POST" action='<%= 
                     request.getContextPath()%>/control'>
                         <div class="col-md-4">
+                            <ul class="list-group">
                             <c:forEach var="hotel" items="${hotelNameList}" >
-                                <ul class="list-group">
+                                
                                     <li>${hotel.hotelName}</li>
-                                </ul>
+                                
                             </c:forEach>
-                        </div>    
+                            </ul>
+                        </div>
+                        <input type="submit" name="submit" value="Submit">
                     </form>
                 </div>    
                 <div id="editDiv">        
@@ -43,6 +46,7 @@
                           method="POST" action='<%= request.getContextPath()%>/control'>
                         <div id="editField" class="col-md-8"><br>
                             <h5>Edit hotel information below</h5>
+                            <input type="hidden" id="hotelId" name="hotelId" value="${hotel.hotelId}" 
                             <input id="editName" name="editName" type="text" class="form-control" placeholder="Edit hotel name"><br>
                             <input id="editAddress" name="editAddress" type="text" class="form-control" placeholder="Edit hotel address"><br>
                             <input id="editCity"  name="editCity" type="text" class="form-control" placeholder="Edit hotel city"><br>
@@ -57,7 +61,7 @@
                     <h5>Enter the information to add hotels</h5>
                     <input id="addName" name="addName" type="text" class="form-control" placeholder="Enter hotel name"><br>
                     <input id="addAddress" name="addAddress" type="text" class="form-control" placeholder="Enter hotel address"><br>
-                    <input id="addtCity"  name="addAddress" type="text" class="form-control" placeholder="Enter hotel city"><br>
+                    <input id="addtCity"  name="addCity" type="text" class="form-control" placeholder="Enter hotel city"><br>
                     <input id="addState" name="addState" type="text" class="form-control" placeholder="Enter hotel state"><br>
                     <input id="addZip" name="addZip"  type="text" class="form-control" placeholder="Enter hotel zip code"><br>
                     <button id="addToList" name="addToList" class="btn btn-default" type="submit">Add to list</button>

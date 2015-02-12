@@ -19,7 +19,7 @@ import java.util.Properties;
  */
 public final class MySqlDatabaseFactory {
     public static String filePath 
-            = "src" + File.separatorChar + "config.properties";
+            = "config.properties";
     public static String connectionClass = "db.connector";
     
     private MySqlDatabaseFactory(){
@@ -95,13 +95,15 @@ public final class MySqlDatabaseFactory {
     }
 //    
     public static void main(String[] args) {
-//        Connection conn = null;
-//        try {
-//            conn = MySqlDatabaseFactory.getConnection();
-//        } catch (IOException | SQLException | ClassNotFoundException ex) {
-//            Logger.getLogger(MySqlDatabaseFactory.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        System.out.println(conn.toString());
+        Connection conn = null;
+        try {
+            conn = MySqlDatabaseFactory.getConnection();
+        } catch (IOException | SQLException | ClassNotFoundException ex) {
+            System.out.println("oops");
+        }
+        if (conn != null){
+            System.out.println("Connected");
+        }
 //        DatabaseAccessorStrategy db = null;
 //        try {
 //            db = MySqlDatabaseFactory.getAccessor();
@@ -113,16 +115,16 @@ public final class MySqlDatabaseFactory {
 //            
 //        }
         
-        HotelDAOStrategy dao = null;
-        try {
-            dao = MySqlDatabaseFactory.getDAO();
-        }catch (IOException | ClassNotFoundException | InstantiationException 
-                | IllegalAccessException ex) {
-            
-        }
-        if (dao == null){
-            System.out.println("null");
-        }
-//        System.out.println(dao.toString());
+//        HotelDAOStrategy dao = null;
+//        try {
+//            dao = MySqlDatabaseFactory.getDAO();
+//        }catch (IOException | ClassNotFoundException | InstantiationException 
+//                | IllegalAccessException ex) {
+//            
+//        }
+//        if (dao == null){
+//            System.out.println("null");
+//        }
+////        System.out.println(dao.toString());
         }
 }

@@ -42,4 +42,6 @@ public interface DatabaseAccessorStrategy {
             throws IOException, SQLException, ClassNotFoundException,
             BatchUpdateException;
     
+    public abstract int getHotelRecordCount() throws IOException, 
+            SQLException, ClassNotFoundException;
 }

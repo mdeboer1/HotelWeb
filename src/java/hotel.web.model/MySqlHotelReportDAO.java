@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -144,6 +146,20 @@ public class MySqlHotelReportDAO implements HotelDAOStrategy {
         }catch(IOException | SQLException | ClassNotFoundException e){
             
         }    
+    }
+    
+    @Override
+    public final int getHotelRecordCount()throws IOException, SQLException,
+            ClassNotFoundException{
+        int recordCount = 0;
+        
+        try {
+            recordCount = database.getHotelRecordCount();
+        } catch (IOException | SQLException | ClassNotFoundException ex) {
+            
+        }
+        
+        return recordCount;
     }
     
     @Override

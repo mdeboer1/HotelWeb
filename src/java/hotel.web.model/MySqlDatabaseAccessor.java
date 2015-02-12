@@ -110,6 +110,7 @@ public class MySqlDatabaseAccessor implements DatabaseAccessorStrategy {
         return hotelRecord;
         }
     
+    @Override
     public final int getHotelRecordCount() throws IOException, SQLException, ClassNotFoundException{
         
         openConnection();
