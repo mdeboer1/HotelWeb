@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hotel.management;
+package hotel.web.controller;
 
 import hotel.web.Hotel;
+import hotel.web.HotelDAOStrategy;
 import hotel.web.HotelDbService;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -27,9 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "controller", urlPatterns = {"/control"})
 public class controller extends HttpServlet {
     private static final String RESULT_PAGE = "/hotelmanagement.jsp"; 
-    private String hotelTableName = "hotels";
-    private HotelDbService service;
-    private int hotelCount;
+    private static String hotelTableName = "hotels";
+    
+    int hotelCount;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,6 +43,22 @@ public class controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        String driverClass = request.getServletContext().getInitParameter("driver.class");
+        String url = request.getServletContext().getInitParameter("db.url");
+        String username = request.getServletContext().getInitParameter("db.username");
+        String password = request.getServletContext().getInitParameter("db.password");
+        String hotelDao = request.getServletContext().getInitParameter("hotel.dao.strategy");
+        String dbAccessor = request.getServletContext().getInitParameter("db.accessor.strategy");
+
+        HotelDbService service = null;
+        try {
+            service = new HotelDbService(driverClass, url, username,
+                    password, hotelDao, dbAccessor);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            
+        }
+        
         if (hotelCount == 0){
             try {
                 hotelCount = service.retrieveHotelRecordCount() + 1;
@@ -52,12 +69,11 @@ public class controller extends HttpServlet {
         
         List <Hotel> hotelList = null;
         try {
-            service = new HotelDbService();
-            
+
             hotelList = service.retrieveHotels(hotelTableName);
             
         } catch (SQLException | ClassNotFoundException | NullPointerException ex) {
-            Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         request.setAttribute("hotelNameList", hotelList);
         

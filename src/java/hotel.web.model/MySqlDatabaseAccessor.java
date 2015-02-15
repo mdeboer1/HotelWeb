@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.BatchUpdateException;
 import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -28,17 +29,28 @@ public class MySqlDatabaseAccessor implements DatabaseAccessorStrategy {
     private Connection connection;
     private Statement statement;
     private ResultSet result;
+    private String driverClass;
+    private String url;
+    private String username;
+    private String password;
     
     public MySqlDatabaseAccessor(){
         
     }
     
     @Override
+    public final void setConnectionVariables(String driverClass, String url, String username, 
+            String password) throws NullPointerException{
+        this.driverClass = driverClass;
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
+    
+    @Override
     public final void openConnection() throws IOException, SQLException, ClassNotFoundException{
-        connection = MySqlDatabaseFactory.getConnection();
-//        System.out.println(connection.toString());
-//        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel",
-//                "root", "admin");
+        Class.forName(driverClass);
+        connection = DriverManager.getConnection(url, username, password);
         
     }
     
@@ -241,4 +253,20 @@ public class MySqlDatabaseAccessor implements DatabaseAccessorStrategy {
                 }
             }
     }
+    
+//    public static void main(String[] args) {
+//        DatabaseAccessorStrategy str = new MySqlDatabaseAccessor();
+//        str.setConnectionVariables( "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/hotel", "root", "admin");
+//        try {
+//            str.openConnection();
+//        } catch (IOException ex) {
+//            Logger.getLogger(MySqlDatabaseAccessor.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MySqlDatabaseAccessor.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(MySqlDatabaseAccessor.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        
+//    }
 }

@@ -32,13 +32,10 @@
                         <div class="col-md-4">
                             <ul class="list-group">
                             <c:forEach var="hotel" items="${hotelNameList}" >
-                                
-                                    <li>${hotel.hotelName}</li>
-                                
+                                <li>${hotel.hotelName}</li>
                             </c:forEach>
                             </ul>
                         </div>
-                        <input type="submit" name="submit" value="Submit">
                     </form>
                 </div>    
                 <div id="editDiv">        

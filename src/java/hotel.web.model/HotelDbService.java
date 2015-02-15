@@ -8,8 +8,7 @@ package hotel.web;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 /**
@@ -17,14 +16,24 @@ import java.util.logging.Logger;
  * @author mdeboer1
  */
 public class HotelDbService {
+    
     private HotelDAOStrategy dao;
-    public HotelDbService(){
+    
+    public HotelDbService(String driverClass, String url, String username, 
+            String password, String hotelDao, String dbAccessor)
+            throws ClassNotFoundException, InstantiationException, 
+            IllegalAccessException {
         try{
-            dao = MySqlDatabaseFactory.getDAO();
-        } catch(IOException | ClassNotFoundException | InstantiationException 
+            Class clazz = Class.forName(hotelDao);
+            dao = (HotelDAOStrategy)clazz.newInstance();
+            clazz = Class.forName(dbAccessor);
+            DatabaseAccessorStrategy database = (DatabaseAccessorStrategy)clazz.newInstance();
+            dao.setDatabaseProperties(database, driverClass, url, username, password);
+        } catch(ClassNotFoundException | InstantiationException 
                 | IllegalAccessException ex){
             
         }
+        
     }
     
     public final List<Hotel> retrieveHotels(String tableName)throws 
@@ -104,17 +113,17 @@ public class HotelDbService {
         return recordCount;
     }
     
-    public static void main(String[] args) {
-        HotelDbService service = new HotelDbService();
-        List<Hotel> list = null;
-        try {
-            list = service.retrieveHotels("hotels");
-        } catch (SQLException | IOException | ClassNotFoundException | NullPointerException ex) {
-            Logger.getLogger(HotelDbService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//        System.out.println(list.size());
-        for (Hotel h : list){
-            System.out.println(h.toString());
-        }
-    }
+//    public static void main(String[] args) {
+//        HotelDbService service = new HotelDbService();
+//        List<Hotel> list = null;
+//        try {
+//            list = service.retrieveHotels("hotels");
+//        } catch (SQLException | IOException | ClassNotFoundException | NullPointerException ex) {
+//            Logger.getLogger(HotelDbService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+////        System.out.println(list.size());
+//        for (Hotel h : list){
+//            System.out.println(h.toString());
+//        }
+//    }
 }

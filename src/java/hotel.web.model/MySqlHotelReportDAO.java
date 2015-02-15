@@ -22,21 +22,15 @@ public class MySqlHotelReportDAO implements HotelDAOStrategy {
     
     private DatabaseAccessorStrategy database;
     
-    /**
-     * No argument constructor receives the type of accessor from the 
-     * MySqlDatabaseFactory
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException 
-     */
-    public MySqlHotelReportDAO() throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException{
-        try {
-            this.database = MySqlDatabaseFactory.getAccessor();
-        } catch (ClassNotFoundException | InstantiationException | 
-                IllegalAccessException ex) {
-            
-        }
+    public MySqlHotelReportDAO(){
+        
+    }
+    
+    @Override
+    public final void setDatabaseProperties(DatabaseAccessorStrategy database,
+        String driverClass, String url, String username, String password){
+        this.database = database;
+        database.setConnectionVariables(driverClass, url, username, password);
     }
     
     @Override

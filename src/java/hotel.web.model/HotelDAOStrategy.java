@@ -36,4 +36,7 @@ public interface HotelDAOStrategy {
     
     public abstract int getHotelRecordCount()throws IOException, SQLException,
             ClassNotFoundException;
+    
+    public abstract void setDatabaseProperties(DatabaseAccessorStrategy database,
+        String driverClass, String url, String username, String password);
 }

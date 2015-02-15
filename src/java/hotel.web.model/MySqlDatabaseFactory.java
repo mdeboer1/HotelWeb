@@ -8,6 +8,7 @@ package hotel.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ import java.util.Properties;
  */
 public final class MySqlDatabaseFactory {
     public static String filePath 
-            = "config.properties";
+            = MySqlDatabaseFactory.class.getResource("config.properties").toString();
     public static String connectionClass = "db.connector";
     
     private MySqlDatabaseFactory(){
@@ -30,6 +31,7 @@ public final class MySqlDatabaseFactory {
             ClassNotFoundException {
         Connection connection = null;
         File file = new File(filePath);
+
         Properties properties = new Properties();
         FileInputStream input;
         try{
@@ -101,7 +103,10 @@ public final class MySqlDatabaseFactory {
         } catch (IOException | SQLException | ClassNotFoundException ex) {
             System.out.println("oops");
         }
-        if (conn != null){
+        if (conn == null){
+            System.out.println("Null");
+        }
+        else {
             System.out.println("Connected");
         }
 //        DatabaseAccessorStrategy db = null;
