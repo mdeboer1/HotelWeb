@@ -11,34 +11,27 @@ body {background-color: #088da5;}
 
 #header {height: 120px;
             text-align: center;
-            background-color: beige;
+            background-color: #999966;
             width: 900px;
             margin: 0 auto;}
 
 #container { width: 900px;
-             height: 90vh;
             margin: 0 auto;
             background-color: white;
             }
 
-#fullHotelList { padding-left: 75px;
-                padding-right: 75px;
-                width: 225px;
-                height: 25vh;
-                border: 2px solid;
-                border-radius: 15px; 
-                float: left; 
-                height: 85vh;
-                margin-left: 40px;
-                margin-right: 50px;   
+#fullHotelList { padding-left: 30px;
 }
+
+#hList {height: 750px;
+        overflow-y: auto;
+        
+    }
 
 #editField { width: 575px;
              height: 40vh;
              padding-left: 75px;
-             padding-right: 75px; 
-             border: 2px solid;
-             border-radius: 15px;
+             padding-right: 75px;
              float: left;   
 }
 
@@ -46,11 +39,7 @@ body {background-color: #088da5;}
             height: 41vh;
             padding-left: 75px;
             padding-right: 75px;
-            border: 2px solid;
-            border-radius: 15px;
             float: left;
             margin-top: 40px;
-    
 }
 
-h5 {font-weight: bold;}
