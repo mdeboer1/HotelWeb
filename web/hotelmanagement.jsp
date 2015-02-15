@@ -49,11 +49,11 @@
                             <fieldset>
                                 <legend>Edit hotel information below</legend>
                                     <input type="hidden" id="hotelId" name="hotelId" value="${hotel.hotelId}">
-                                    <input id="editName" name="editName" type="text" class="form-control" placeholder="Edit hotel name"><br>
-                                    <input id="editAddress" name="editAddress" type="text" class="form-control" placeholder="Edit hotel address"><br>
-                                    <input id="editCity"  name="editCity" type="text" class="form-control" placeholder="Edit hotel city"><br>
-                                    <input id="editState" name="editState" type="text" class="form-control" placeholder="Edit hotel state"><br>
-                                    <input id="editZip" name="editZip"  type="text" class="form-control" placeholder="Edit hotel zip code"><br>
+                                    <input id="editName" name="editName" type="text" class="form-control" placeholder="Edit hotel name" value="${hotelToEdit.hotelName}"><br>
+                                    <input id="editAddress" name="editAddress" type="text" class="form-control" placeholder="Edit hotel address" value="${hotelToEdit.address}"><br>
+                                    <input id="editCity"  name="editCity" type="text" class="form-control" placeholder="Edit hotel city" value="${hotelToEdit.city}"><br>
+                                    <input id="editState" name="editState" type="text" class="form-control" placeholder="Edit hotel state" value="${hotelToEdit.state}"><br>
+                                    <input id="editZip" name="editZip"  type="text" class="form-control" placeholder="Edit hotel zip code" value="${hotelToEdit.zip}"><br>
                                     <button id="editHotel" name="editHotel" class="btn btn-default" type="submit">Edit hotel</button>
                                     <button id="deleteHotel" name="deleteHotel" class="btn btn-default" type="submit">Delete Hotel</button>
                             </fieldset>

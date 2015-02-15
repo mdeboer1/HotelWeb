@@ -44,6 +44,7 @@ public class controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        //Retrieve strategy and database connection information from web.xml
         String driverClass = request.getServletContext().getInitParameter("driver.class");
         String url = request.getServletContext().getInitParameter("db.url");
         String username = request.getServletContext().getInitParameter("db.username");
@@ -51,6 +52,7 @@ public class controller extends HttpServlet {
         String hotelDao = request.getServletContext().getInitParameter("hotel.dao.strategy");
         String dbAccessor = request.getServletContext().getInitParameter("db.accessor.strategy");
 
+        //Create the database service class
         HotelDbService service = null;
         try {
             service = new HotelDbService(driverClass, url, username,
@@ -59,6 +61,7 @@ public class controller extends HttpServlet {
             
         }
         
+        //This is used only on start up of web page to get the count of hotels in the db
         if (hotelCount == 0){
             try {
                 hotelCount = service.retrieveHotelRecordCount() + 1;
@@ -67,6 +70,7 @@ public class controller extends HttpServlet {
             }
         }
         
+        //This section is used to get a List of all hotels and display them in the index.jsp
         List <Hotel> hotelList = null;
         try {
 
@@ -77,6 +81,24 @@ public class controller extends HttpServlet {
         }
         request.setAttribute("hotelNameList", hotelList);
         
+        //This section retrieves the query string from the hotel name hyperlinks
+        String[] query = request.getParameterValues("id");
+        Hotel hotel = null;
+        int id;
+        if (query != null){
+        try {
+            id = Integer.parseInt(query[0]);
+            for(Hotel h : hotelList){
+                if (id == h.getHotelId()){
+                    hotel = h;
+                }
+            }
+            request.setAttribute("hotelToEdit", hotel);
+        } catch (NumberFormatException e){
+            
+        }
+        }
+        //Crud operations
         String edit = request.getParameter("editHotel");
         String delete = request.getParameter("deleteHotel");
         String addToList = request.getParameter("addToList");
@@ -84,9 +106,8 @@ public class controller extends HttpServlet {
         List<Hotel> hotelAdd = null;
         String columnToUpdate = request.getParameter("editName");
         String newValue;
-        String hotelId = request.getParameter("hoteId");
+        String hotelId = request.getParameter("hotelId");
         if (edit != null){
-            
             try {
                 // change parameters
                 service.updateOneHotelRecordColumnById(hotelTableName, "columnToUpdate", "newValue", 1);
@@ -96,15 +117,13 @@ public class controller extends HttpServlet {
         }
         else if (delete != null){
             try {
-                int id = Integer.parseInt(hotelId);
+                id = Integer.parseInt(hotelId);
                 //change hotelId by retrieving it from form
                 service.deleteHotelById(id);
             } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
                 
             }
         }
-        
-        
         else if (addToList != null){
             hotelAdd = new ArrayList<>();
             Hotel h = new Hotel(hotelCount, request.getParameter("addName"),
