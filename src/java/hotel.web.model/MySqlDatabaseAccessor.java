@@ -170,7 +170,7 @@ public class MySqlDatabaseAccessor implements DatabaseAccessorStrategy {
 
         String updateString = "update " + tableName + " set hotel_name = ?, "
                 + "hotel_address = ?, hotel_city = ?, hotel_state = ?, hotel_zip"
-                + "= ? where hotel_id = ?";
+                + " = ? where hotel_id = ?";
         try {
            
             connection.setAutoCommit(false);
