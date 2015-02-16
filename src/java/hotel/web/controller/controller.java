@@ -51,7 +51,7 @@ public class controller extends HttpServlet {
         String password = request.getServletContext().getInitParameter("db.password");
         String hotelDao = request.getServletContext().getInitParameter("hotel.dao.strategy");
         String dbAccessor = request.getServletContext().getInitParameter("db.accessor.strategy");
-
+        int id;
         //Create the database service class
         HotelDbService service = null;
         try {
@@ -64,18 +64,69 @@ public class controller extends HttpServlet {
         //This is used only on start up of web page to get the count of hotels in the db
         if (hotelCount == 0){
             try {
-                hotelCount = service.retrieveHotelRecordCount() + 1;
-            } catch (SQLException | ClassNotFoundException ex) {
+                if (service != null){
+                    hotelCount = service.retrieveHotelRecordCount() + 1;
+                }
+            } catch (SQLException | ClassNotFoundException | NullPointerException ex) {
                 Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
+        
+        //Crud operations
+        String edit = request.getParameter("editHotel");
+        String delete = request.getParameter("deleteHotel");
+        String addToList = request.getParameter("addToList");
+        String newHotelName = request.getParameter("editName");
+        String newHotelAddress = request.getParameter("editAddress");
+        String newHotelCity = request.getParameter("editCity");
+        String newHotelState = request.getParameter("editState");
+        String newHotelZip = request.getParameter("editZip");
+        String hotelId = request.getParameter("hotelId");
+        
+        if (edit != null){
+            try {
+                // change parameters
+                int updateId = Integer.parseInt(hotelId);
+                if (service !=null){
+                    service.updateOneHotelRecordColumnById(hotelTableName, newHotelName
+                            , newHotelAddress, newHotelCity, newHotelState, newHotelZip,
+                            updateId);
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if (delete != null){
+            try {
+                id = Integer.parseInt(hotelId);
+                //change hotelId by retrieving it from form
+                if (service != null){
+                    service.deleteHotelById(id);
+                }
+            } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
+                
+            }
+        }
+        else if (addToList != null){
+            Hotel h = new Hotel(hotelCount, request.getParameter("addName"),
+                request.getParameter("addAddress"), request.getParameter("addCity"),
+                request.getParameter("addState"), request.getParameter("addZip"));
+            hotelCount++;
+            if (service != null){
+                try {
+                    service.addHotel(h);
+                } catch (SQLException | ClassNotFoundException ex) {
+                    
+                }
+            }
+        }
         //This section is used to get a List of all hotels and display them in the index.jsp
         List <Hotel> hotelList = null;
         try {
-
-            hotelList = service.retrieveHotels(hotelTableName);
-            
+            if (service != null){    
+                hotelList = service.retrieveHotels(hotelTableName);
+            }
         } catch (SQLException | ClassNotFoundException | NullPointerException ex) {
             
         }
@@ -84,7 +135,7 @@ public class controller extends HttpServlet {
         //This section retrieves the query string from the hotel name hyperlinks
         String[] query = request.getParameterValues("id");
         Hotel hotel = null;
-        int id;
+        
         if (query != null){
         try {
             id = Integer.parseInt(query[0]);
@@ -97,51 +148,6 @@ public class controller extends HttpServlet {
         } catch (NumberFormatException e){
             
         }
-        }
-        //Crud operations
-        String edit = request.getParameter("editHotel");
-        String delete = request.getParameter("deleteHotel");
-        String addToList = request.getParameter("addToList");
-        String submitList = request.getParameter("submitToDb");
-        List<Hotel> hotelAdd = null;
-        String columnToUpdate = request.getParameter("editName");
-        String newValue;
-        String hotelId = request.getParameter("hotelId");
-        if (edit != null){
-            try {
-                // change parameters
-                service.updateOneHotelRecordColumnById(hotelTableName, "columnToUpdate", "newValue", 1);
-            } catch (SQLException | ClassNotFoundException ex) {
-                Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else if (delete != null){
-            try {
-                id = Integer.parseInt(hotelId);
-                //change hotelId by retrieving it from form
-                service.deleteHotelById(id);
-            } catch (NumberFormatException | SQLException | ClassNotFoundException ex) {
-                
-            }
-        }
-        else if (addToList != null){
-            hotelAdd = new ArrayList<>();
-            Hotel h = new Hotel(hotelCount, request.getParameter("addName"),
-                request.getParameter("addAddress"), request.getParameter("addCity"),
-                request.getParameter("addState"), request.getParameter("addZip"));
-            hotelAdd.add(h);
-            hotelCount++;
-            // list will be used in the submit method for this form.
-        }
-        else if (submitList != null){
-            if (hotelAdd.size() == 1){
-//                try {
-//                    Hotel h = hotelAdd[0];
-//                    service.addHotel();
-//                } catch (SQLException | ClassNotFoundException ex) {
-//                    Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-            }
         }
         RequestDispatcher view =
             request.getRequestDispatcher(RESULT_PAGE);

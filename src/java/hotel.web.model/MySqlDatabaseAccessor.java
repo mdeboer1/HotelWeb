@@ -161,21 +161,26 @@ public class MySqlDatabaseAccessor implements DatabaseAccessorStrategy {
     
     @Override
     public final void updateOneHotelRecordColumnById(String tableName,  
-            String columnToUpdate, String newValue, int hotelId) throws 
+            String newHotelName, String newHotelAddress, String newHotelCity,
+            String newHotelState, String newHotelZip, int hotelId) throws 
             IOException, SQLException, ClassNotFoundException{
         openConnection();
 
         PreparedStatement updateRecord = null;
-        // update hotels set hotel_name = "hotel3" where hotel_id = 1;
-        // update tableName set columnToUpdate = newValue where hotel_id = hotelId
-        String updateString = "update " + tableName + " set " + columnToUpdate +
-                " = ? where hotel_id = ?";
+
+        String updateString = "update " + tableName + " set hotel_name = ?, "
+                + "hotel_address = ?, hotel_city = ?, hotel_state = ?, hotel_zip"
+                + "= ? where hotel_id = ?";
         try {
            
             connection.setAutoCommit(false);
             updateRecord = connection.prepareStatement(updateString);
-            updateRecord.setString(1, newValue);
-            updateRecord.setInt(2, hotelId);
+            updateRecord.setString(1, newHotelName);
+            updateRecord.setString(2, newHotelAddress);
+            updateRecord.setString(3, newHotelCity);
+            updateRecord.setString(4, newHotelState);
+            updateRecord.setString(5, newHotelZip);
+            updateRecord.setInt(6, hotelId);
             updateRecord.executeUpdate();
             connection.commit();
         } catch (SQLException e){

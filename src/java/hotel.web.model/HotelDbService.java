@@ -91,10 +91,13 @@ public class HotelDbService {
     }
     
     public final void updateOneHotelRecordColumnById(String tableName,  
-            String columnToUpdate, String newValue, int hotelId) throws 
+            String newHotelName, String newHotelAddress, String newHotelCity,
+            String newHotelState, String newHotelZip, int hotelId) throws 
             IOException, SQLException, ClassNotFoundException{
         try{
-            dao.updateOneHotelRecordColumnById(tableName, columnToUpdate, newValue, hotelId);
+            dao.updateOneHotelRecordColumnById(tableName, newHotelName, 
+                    newHotelAddress, newHotelCity, newHotelState, newHotelZip,
+                    hotelId);
         } catch (IOException | SQLException | ClassNotFoundException e)  {
             
         }  

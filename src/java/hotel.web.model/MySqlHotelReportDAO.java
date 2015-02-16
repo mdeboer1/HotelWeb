@@ -158,12 +158,14 @@ public class MySqlHotelReportDAO implements HotelDAOStrategy {
     
     @Override
     public final void updateOneHotelRecordColumnById(String tableName,  
-            String columnToUpdate, String newValue, int hotelId)throws 
+            String newHotelName, String newHotelAddress, String newHotelCity,
+            String newHotelState, String newHotelZip, int hotelId) throws 
             IOException, SQLException, ClassNotFoundException{
         
         try {
-            database.updateOneHotelRecordColumnById(tableName, columnToUpdate, 
-                    newValue, hotelId);
+            database.updateOneHotelRecordColumnById(tableName, newHotelName, 
+                    newHotelAddress, newHotelCity, newHotelState, newHotelZip,
+                    hotelId);
         } catch (IOException | SQLException | ClassNotFoundException e){
             
         }
