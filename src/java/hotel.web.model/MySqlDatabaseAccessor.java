@@ -134,7 +134,8 @@ public class MySqlDatabaseAccessor implements DatabaseAccessorStrategy {
             
         }
         
-        String sqlStatement = "SELECT count(*) from hotels";
+        String sqlStatement = "select hotel_id from hotels order by hotel_id desc"
+                + "limit 1";
         result = statement.executeQuery(sqlStatement);
         while(result.next()){
             hotelCount = result.getInt(1);

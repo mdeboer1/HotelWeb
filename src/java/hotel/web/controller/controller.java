@@ -76,7 +76,7 @@ public class controller extends HttpServlet {
         //Crud operations
         String edit = request.getParameter("editHotel");
         String delete = request.getParameter("deleteHotel");
-        String addToList = request.getParameter("addToList");
+        String addHotel = request.getParameter("addToList");
         String newHotelName = request.getParameter("editName");
         String newHotelAddress = request.getParameter("editAddress");
         String newHotelCity = request.getParameter("editCity");
@@ -108,7 +108,7 @@ public class controller extends HttpServlet {
                 
             }
         }
-        else if (addToList != null){
+        else if (addHotel != null){
             Hotel h = new Hotel(hotelCount, request.getParameter("addName"),
                 request.getParameter("addAddress"), request.getParameter("addCity"),
                 request.getParameter("addState"), request.getParameter("addZip"));
